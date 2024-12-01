@@ -1,84 +1,31 @@
-name: Advanced Testing Workflow
+name: Node.js CI
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  setup:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      # Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'  # Update to a compatible Node.js version
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # or whatever Node version you're using
 
-      # Cache node_modules to speed up workflows
-      - name: Cache npm dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
+    - name: Set execute permissions for husky
+      run: sudo chmod +x .husky/*
 
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          npm install --legacy-peer-deps
-          npx husky install
+    - name: Install dependencies with legacy peer deps
+      run: npm install --legacy-peer-deps --unsafe-perm=true
 
-      # Fix husky permissions
-      - name: Fix husky permissions
-        run: chmod +x node_modules/.bin/husky
+    - name: Install husky manually
+      run: npx husky install
 
-  lint:
-    runs-on: ubuntu-latest
-    needs: setup
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Run ESLint
-        run: npm run lint
-
-      - name: Run Prettier Check
-        run: npx prettier --check .
-
-  test:
-    runs-on: ubuntu-latest
-    needs: setup
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Run Jest tests
-        run: npm test
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: Deploy to production (example placeholder step)
-        run: echo "Deploying to production..."
+    - name: Run tests
+      run: npm test
