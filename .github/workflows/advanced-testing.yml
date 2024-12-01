@@ -13,19 +13,5 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'  # Adjust to the version you're using
-
-    - name: Set execute permissions for husky
-      run: sudo chmod +x .husky/*
-
-    - name: Install dependencies
-      run: npm install --unsafe-perm=true
-
-    - name: Install husky manually
-      run: npx husky install
-
     - name: Run tests
       run: npm test
