@@ -27,6 +27,9 @@ jobs:
         run: npm install
 
       # Step 4: Lint the code
+      - name: Fix ESLint permissions
+        run: chmod +x ./node_modules/.bin/eslint
+
       - name: Lint Code
         run: npx eslint .
 
