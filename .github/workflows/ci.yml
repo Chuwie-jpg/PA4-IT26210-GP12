@@ -11,12 +11,13 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-      # Step 1: Checkout the code
+      # Step 1: Checkout repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js (version 18 in this case)
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -26,14 +27,19 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Lint the code
+      # Step 4: Install ESLint
+      - name: Install ESLint
+        run: npm install eslint --save-dev
+
+      # Step 5: Fix ESLint permissions
       - name: Fix ESLint permissions
         run: chmod +x ./node_modules/.bin/eslint
 
+      # Step 6: Lint the code
       - name: Lint Code
         run: npx eslint .
 
-      # Step 5: Run tests
+      # Step 7: Run tests
       - name: Run Tests
         run: npm test
 
