@@ -20,7 +20,7 @@ jobs:
       # Set file permissions for executable files
       - name: Set executable permissions
         run: |
-          chmod -R +x ./.github/workflows/node-testing.yml
+          chmod -R +x ./.github
           chmod=+x .github/workflows/node-testing.yml
 
       # Set up Node.js
