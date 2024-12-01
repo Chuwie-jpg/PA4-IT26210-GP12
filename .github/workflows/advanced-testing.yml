@@ -16,13 +16,13 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'  # or whatever Node version you're using
+        node-version: '16'  # Adjust to the version you're using
 
     - name: Set execute permissions for husky
       run: sudo chmod +x .husky/*
 
-    - name: Install dependencies with legacy peer deps
-      run: npm install --legacy-peer-deps --unsafe-perm=true
+    - name: Install dependencies
+      run: npm install --unsafe-perm=true
 
     - name: Install husky manually
       run: npx husky install
