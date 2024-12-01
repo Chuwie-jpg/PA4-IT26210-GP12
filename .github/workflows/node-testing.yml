@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js Testing
 
 on:
   push:
@@ -13,16 +13,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      # Set file permissions for executable files
+      - name: Set executable permissions
+        run: |
+          chmod -R +x ./.github/workflows/node-testing.yml
+          chmod=+x .github/workflows/node-testing.yml
 
-    - name: Install dependencies
-      run: npm install
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: Run tests
-      run: npm test
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      # Run tests
+      - name: Run tests
+        run: npm test
