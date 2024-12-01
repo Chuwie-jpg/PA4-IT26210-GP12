@@ -1,15 +1,41 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import pluginReact from "eslint-plugin-react";
+// eslint.config.mjs
 
-/** @type {import('eslint').Linter.Config[]} */
+import eslintPluginReact from 'eslint-plugin-react';
+import pkg from 'eslint';
+const { Linter } = pkg;
+
 export default [
   {
-    files: ["**/*.{js,mjs,cjs,jsx}"],
     languageOptions: {
-      globals: globals.browser,
+      globals: {
+        browser: true,
+        node: true,
+        es2021: true,
+      },
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+    plugins: {
+      react: eslintPluginReact,
+    },
+    rules: {
+      'no-console': 'warn',
+      'react/prop-types': 'off',
     },
   },
-  pluginJs.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  {
+    files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
+    languageOptions: {
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+    rules: {
+      'react/jsx-uses-react': 'error',
+      'react/react-in-jsx-scope': 'error',
+    },
+  },
 ];
