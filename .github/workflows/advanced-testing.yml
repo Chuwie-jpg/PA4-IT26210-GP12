@@ -20,9 +20,9 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Change this to the Node.js version you're using
+          node-version: '18'  # Update to a compatible Node.js version
 
-      # Cache npm dependencies to speed up workflows
+      # Cache node_modules to speed up workflows
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
@@ -35,10 +35,11 @@ jobs:
       - name: Install dependencies
         run: |
           npm install --legacy-peer-deps
-          # Disable Husky hooks in CI by setting the environment variable
-          echo "HUSKY_SKIP_HOOKS=1" >> $GITHUB_ENV
-          # Install husky but disable hooks during CI
           npx husky install
+
+      # Fix husky permissions
+      - name: Fix husky permissions
+        run: chmod +x node_modules/.bin/husky
 
   lint:
     runs-on: ubuntu-latest
