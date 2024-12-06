@@ -61,6 +61,6 @@ function sum(numbers) {
     add,
     safeSum,
     mixedSum,
-    addStringToArray
+    // addStringToArray
   };
   
